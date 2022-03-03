@@ -1,10 +1,15 @@
-package parser
+package http
 
 import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 )
+
+var headers http.Header = http.Header{
+	"user-agent": {"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.174 YaBrowser/22.1.3.848 Yowser/2.5 Safari/537.36"},
+}
 
 func Get(url string) *http.Response {
 	client := http.Client{}
@@ -15,9 +20,7 @@ func Get(url string) *http.Response {
 		return nil
 	}
 
-	req.Header = http.Header{
-		"user-agent": []string{"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.174 YaBrowser/22.1.3.848 Yowser/2.5 Safari/537.36"},
-	}
+	req.Header = headers
 
 	response, err := client.Do(req)
 
@@ -29,8 +32,11 @@ func Get(url string) *http.Response {
 	return response
 }
 
-func Login(url string, login string, password string) *http.Response {
-	response, err := http.PostForm(url, map[string][]string{})
+func Login(loginUrl string, login string, password string) *http.Response {
+	response, err := http.PostForm(loginUrl, url.Values{
+		"login":    {login},
+		"password": {password},
+	})
 
 	if err != nil {
 		log.Fatal(err)

@@ -1,32 +1,29 @@
 package parser
 
+import (
+	"github.com/geziyor/geziyor"
+)
+
 type AbsParser interface {
 	ParseMarks()
 	GetLessonMarks()
 	GetAllMarks()
 	GetWeekShedule()
+	GetTomorrowShedule()
 }
 
 type Parser struct {
-	Url string
+	Parser *geziyor.Geziyor
+	Url    string
 }
 
-func (p *Parser) ParseMarks() {
+func NewParser(url string) *Parser {
+	par := geziyor.NewGeziyor(&geziyor.Options{
+		StartURLs: []string{url},
+	})
 
-}
-
-func (p *Parser) GetLessonMarks() {
-
-}
-
-func (p *Parser) GetAllMarks() {
-
-}
-
-func (p *Parser) GetWeekShedule() {
-
-}
-
-func (p *Parser) GetTomorrowShedule() {
-
+	return &Parser{
+		Parser: par,
+		Url:    url,
+	}
 }
