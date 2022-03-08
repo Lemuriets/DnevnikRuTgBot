@@ -14,16 +14,14 @@ type AbsParser interface {
 
 type Parser struct {
 	Parser *geziyor.Geziyor
-	Url    string
+	Body   string
 }
 
-func NewParser(url string) *Parser {
-	par := geziyor.NewGeziyor(&geziyor.Options{
-		StartURLs: []string{url},
-	})
+func NewParser(body string) *Parser {
+	par := geziyor.NewGeziyor(&geziyor.Options{})
 
 	return &Parser{
 		Parser: par,
-		Url:    url,
+		Body:   body,
 	}
 }

@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+
+	// "os"
 
 	// "github.com/Lemuriets/marksBot/internal/app"
-	"github.com/Lemuriets/marksBot/pkg/http"
+	exHttp "github.com/Lemuriets/marksBot/pkg/http"
 	"github.com/joho/godotenv"
 )
 
@@ -14,9 +17,10 @@ func main() {
 		log.Fatal("failed to load .env file")
 	}
 
-	content := http.Login("https://login.dnevnik.ru/login/", "yegormadyarov", "egormadyarov9")
+	h := exHttp.NewHttp()
+	resp := h.LoginPost("https://dnevnik.ru", os.Getenv("login"), os.Getenv("password"))
 
-	fmt.Println(content)
+	fmt.Println(resp.Cookies())
 	// botApp := app.NewBot("DnevnikRuBot")
 	// botApp.Start()
 }
